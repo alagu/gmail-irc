@@ -1,0 +1,13 @@
+{
+  "name": "Chat",
+  "version": "0.0.1",
+  "description": "Chat",
+  "content_scripts": [ {
+     "exclude_globs": [  ],
+     "include_globs": [ "https://mail.google.com/mail/*" ],
+     "js": ["jquery.js", "script.js"],
+     "matches": [ "http://*/*", "https://*/*" ],
+     "run_at": "document_idle"
+  } ],
+  "permissions": [ "notifications", "tabs", "http://*/*", "https://*/*", "http://*.google.com/*", "https://*.google.com/*" ]
+}
