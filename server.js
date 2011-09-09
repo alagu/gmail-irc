@@ -10,6 +10,27 @@ var http = require("http"),
   ignore_uniq = false,
   allowed_domains = ["chats.nodester.com", "localhost:8764", "10.0.1.6:8764"];
 
+
+
+var mysql = require('mysql');
+var DATABASE = 'teamtalk';
+
+var archive = function(user, team,channel,message)
+{
+  var nick = user.nick.split('~')[0];
+  if(message.search('/msg') != -1 || message.search('/join') != -1)
+  {
+    var db = mysql.createClient({
+        user: 'root',
+        password: '???',
+      });
+    db.query('USE '+DATABASE);
+    db.query( "insert into archive (user, team,channel,message) values(?, ?,?,?)", [nick, team,channel,message] );
+    db.end();
+  }
+}
+
+
 var send404 = function(res) {
   res.writeHead(404);
   res.write('404');
@@ -39,11 +60,11 @@ function sendNicksList(client, room) {
 
 function broadCast(client, room, msg) {  
   var n = [];
-  console.log(room);
+  console.log('Broadcasting');
+  archive(nicks[client.sessionId],'interviewstreet',room,msg);
   for(key in nicks) {
     try {
       if(nicks[key] && nicks[key]["rooms"] && nicks[key]["rooms"].indexOf(room) >= 0) {
-        console.log('key:' + key + ">" + msg);
         var n = "";
         if(nicks[client.sessionId]) n = nicks[client.sessionId]["nick"];
         client.send_to(key, json({ msg: HTMLEncode(msg), room: HTMLEncode(room), from: HTMLEncode(n) }));      
@@ -137,14 +158,12 @@ socket.on("connection", function(client){
   });
   
   client.on("message", function(message) {
-  	console.log('message detected');
 	
     var allowed = true;
     // for(domain in allowed_domains) {
     //   
     //   if(allowed_domains[domain] == client.request.headers.host) allowed = true;
     // }
-    console.log(message);
     if(allowed) {
       var msg = message.split(" ");
 	  console.log('msg:' + msg);
@@ -159,17 +178,7 @@ socket.on("connection", function(client){
             if(nicks[client.sessionId.toString()] == undefined) nicks[client.sessionId.toString()] = {};
             nicks[client.sessionId.toString()]["nick"] = msg.slice(1).join(" ").trim();
             client.send(json({ msg: "/your_nick " + msg.slice(1).join(" ").trim() }));   
- console.log('msg:/your_nick');
             sendNicksList(client, msg.slice(1).join(" "));       
-
-// ELSE IF RECONNECTED
-		// } else {
-		//             // if(nicks[client.sessionId.toString()] == undefined) nicks[client.sessionId.toString()] = {};
-		// 	nicks[client.sessionId.toString()] = {};
-		//             nicks[client.sessionId.toString()]["nick"] = msg.slice(1).join(" ").trim();
-		//             client.send(json({ msg: "/your_nick " + msg.slice(1).join(" ").trim() }));   
-		//             sendNicksList(client, msg.slice(1).join(" "));       
-		// };
 
 		} else {
 			ignore_uniq = false;
@@ -218,3 +227,4 @@ socket.on("connection", function(client){
   
   client.send(json({ msg: "/hello " + client.sessionId }));
 });
+
