@@ -1,5 +1,6 @@
 // node server-io.js
 var http = require("http"),
+   https = require("https"),
   io = require('./socket.io'),
   sys = require("sys"),
   fs = require("fs"),
@@ -112,7 +113,7 @@ var httpServer = http.createServer(function(req, res) {
   } 
 });
 
-httpServer.listen(80); 
+httpServer.listen(81); 
 // httpServer.listen(8764); 
 
 

@@ -1,28 +1,21 @@
 var conn_id = null;
 var debug = true;
 var nick = "";
-var room = "main";
+var room = "";
 var rooms = {};
 var numUnread = 0;
 var nick =""
-if (!$.cookie('username')) {
-	nick = prompt("Please enter your name",""); 
-	$.cookie('username', nick, { expires: 700, path: '/'});
-} else {
-	nick = $.cookie('username');
-}
+var login_info = window.location.hash;
+login_info = login_info.split('#')[1];
+var user = login_info.split('@')[0];
+var domain = login_info.split('@')[1];
+nick = user;
 
 var batches = {};
 
+if(room == "") room = "main" + '-' + domain.replace('.','_');
 
-var path = location.pathname.replace( "/", "" );
-if(!/\.(js|html|swf|wav|css|png)$/.test(path)){
-	room = path;
-}
-if(room == "") room = "main";
-
- // var socket = new io.Socket(null, {port: 8764, rememberTransport: false});
-var socket = new io.Socket(null, {port: 80, rememberTransport: false});
+var socket = new io.Socket(null, {port: 81, rememberTransport: false});
 
 socket.connect();
 
@@ -145,7 +138,7 @@ socket.on('message', function(message){
     case "/your_nick":
       nick = data.slice(1).join(" ");
       if(rooms[room] == undefined) {
-        socket.send("/join " + room);
+        socket.send("/join " + room);// + ':' + domain);
       } else {
         refreshList(room);
       }
@@ -239,6 +232,7 @@ function send(msg) {
       case "/join":
         room = data[1].replace(/\W/g, "");
         msg = "/join " + room;
+        console.log("Joining " + room);
         can_send = nick == "" ? false : true;
         break;
       case "/nick":
@@ -373,7 +367,8 @@ function displayRoom(r) {
    	$('#r_' + r).html("@" + fname);
   } else {
 	if(room.length != 16 && !IsNumeric(room)){
-   		$('#r_' + r).html(r);
+     console.log(r);
+   		$('#r_' + r).html(r.split('-')[0]);
 	}
   }  
   $('#n_' + r).html("");
