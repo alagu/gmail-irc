@@ -20,9 +20,11 @@ var archive = function(user, team,channel,message)
   var nick = user.nick.split('~')[0];
   if(message.search('/msg') != -1 || message.search('/join') != -1)
   {
+    message = message.replace('/msg ','');
+    message = message.replace('/join ','::');
     var db = mysql.createClient({
         user: 'root',
-        password: '??',
+        password: 'allagappan',
       });
     db.query('USE '+DATABASE);
     db.query( "insert into archive (user, team,channel,message) values(?, ?,?,?)", [nick, team,channel,message] );
@@ -60,11 +62,12 @@ function sendNicksList(client, room) {
 
 function broadCast(client, room, msg) {  
   var n = [];
+  var publisherDomain = nicks[client.sessionId]['domain'];
   console.log('[OUTGOING] ' + room + ' ' + msg);
-  archive(nicks[client.sessionId],'interviewstreet',room,msg);
+  archive(nicks[client.sessionId],nicks[client.sessionId]['domain'],room,msg);
   for(key in nicks) {
     try {
-      if(nicks[key] && nicks[key]["rooms"] && nicks[key]["rooms"].indexOf(room) >= 0) {
+      if(nicks[key] && nicks[key]["rooms"] && nicks[key]["rooms"].indexOf(room) >= 0 && nicks[key]['domain'] == publisherDomain) {
         var n = "";
         if(nicks[client.sessionId]) n = nicks[client.sessionId]["nick"];
         client.send_to(key, json({ msg: HTMLEncode(msg), room: HTMLEncode(room), from: HTMLEncode(n) }));      
@@ -160,10 +163,6 @@ socket.on("connection", function(client){
   client.on("message", function(message) {
 	
     var allowed = true;
-    // for(domain in allowed_domains) {
-    //   
-    //   if(allowed_domains[domain] == client.request.headers.host) allowed = true;
-    // }
     if(allowed) {
       var msg = message.split(" ");
       console.log('[INCOMING] ' + msg);
@@ -193,7 +192,7 @@ socket.on("connection", function(client){
           if(nicks[client.sessionId.toString()]["domain"] == undefined) nicks[client.sessionId.toString()]["domain"] = msg[2];
           if(nicks[client.sessionId.toString()]["rooms"] == undefined) nicks[client.sessionId.toString()]["rooms"] = [];
           nicks[client.sessionId.toString()]["rooms"].push(msg[1]);
-          broadCast(client, msg[1],"/join " + nicks[client.sessionId.toString()]["nick"] + " joined the #" + msg.slice(1).join(" ") + " room");
+          broadCast(client, msg[1],"/join " + nicks[client.sessionId.toString()]["nick"].split('~')[0] + " joined the #" + msg[1] + " room");
           break;
         case "/msg":
           broadCast(client, msg[1], "/msg " + msg.slice(2).join(" "));
