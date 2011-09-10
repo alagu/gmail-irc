@@ -136,7 +136,7 @@ socket.on('message', function(message){
     case "/your_nick":
       nick = data.slice(1).join(" ");
       if(rooms[room] == undefined) {
-        socket.send("/join " + room);// + ':' + domain);
+        socket.send("/join " + room + " " + domain);
       } else {
         refreshList(room);
       }
@@ -146,6 +146,9 @@ socket.on('message', function(message){
       rooms[room] = {};
       rooms[room]["last_user"] = "";
       rooms[room]["nb"] = 0;
+      console.log(rooms);
+      console.log(message);
+      console.log(nick);
       if(nick == message.from) {
         $('#room').html("Connected on room #" + room);
         $('#rooms ul:first-child').append("<li id='r_" + room + "'>" + room + "</li>");
@@ -229,7 +232,7 @@ function send(msg) {
     switch(data[0]) {
       case "/join":
         room = data[1].replace(/\W/g, "");
-        msg = "/join " + room;
+        msg = "/join " + room + " "  + domain;
         console.log("Joining " + room);
         can_send = nick == "" ? false : true;
         break;
@@ -389,7 +392,6 @@ function addNewRoom(r) {
   $('#room_' + r).append("<div class='nicks' id='n_"+ r +"'></div>");
 if ($('#t_' + r).length == 0) {
   $('#f_' + r).append('<input type="text" id="t_' + r + '" name="t" value="" width="50"  autocomplete="off"/><script>t_' + r + '.focus();</script>');
-  $('#f_' + r).append('<input type="submit" value="send" />');
 }
   $('.room').css("display","none");
   $('#r_' + r).click(function() { displayRoom(this.id) });        

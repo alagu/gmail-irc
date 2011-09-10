@@ -188,10 +188,12 @@ socket.on("connection", function(client){
           // } else client.send(json({ msg: "/notice Login " + msg.slice(1).join(" ").trim() + " already used"}));
           break;
         case "/join":
+          console.log(msg);
           if(nicks[client.sessionId.toString()] == undefined) nicks[client.sessionId.toString()] = {};
+          if(nicks[client.sessionId.toString()]["domain"] == undefined) nicks[client.sessionId.toString()]["domain"] = msg[2];
           if(nicks[client.sessionId.toString()]["rooms"] == undefined) nicks[client.sessionId.toString()]["rooms"] = [];
-          nicks[client.sessionId.toString()]["rooms"].push(msg.slice(1).join(" "));
-          broadCast(client, msg.slice(1).join(" "),"/join " + nicks[client.sessionId.toString()]["nick"] + " joined the #" + msg.slice(1).join(" ") + " room");
+          nicks[client.sessionId.toString()]["rooms"].push(msg[1]);
+          broadCast(client, msg[1],"/join " + nicks[client.sessionId.toString()]["nick"] + " joined the #" + msg.slice(1).join(" ") + " room");
           break;
         case "/msg":
           broadCast(client, msg[1], "/msg " + msg.slice(2).join(" "));
