@@ -48,8 +48,11 @@ var CHAT  = {};
    CHAT.displayed = true;
    
    $('#toggleIRC').click(CHAT.toggleChatBox);
-   if("chat_displayed" in localStorage && localStorage["chat_displayed"])
+   console.log("localstorage");
+   console.log(localStorage["chat_displayed"]);
+   if(localStorage["chat_displayed"] == "false")
    {
+     console.log("Calling");
      CHAT.toggleChatBox();
    }
    
