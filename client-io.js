@@ -146,9 +146,6 @@ socket.on('message', function(message){
       rooms[room] = {};
       rooms[room]["last_user"] = "";
       rooms[room]["nb"] = 0;
-      console.log(rooms);
-      console.log(message);
-      console.log(nick);
       if(nick == message.from) {
         $('#room').html("Connected on room #" + room);
         $('#rooms ul:first-child').append("<li id='r_" + room + "'>" + room + "</li>");
