@@ -1,5 +1,5 @@
 body {
-  background: #EEEEEE;
+  background: #FFF;
   font-family: "monospace", Helvetica, Arial, sans-serif;
   padding: 0; margin: 0;
 }
@@ -45,10 +45,8 @@ a:hover { opacity: 0.8; }
   top: 10px;
   right: 100px;
   overflow-y: auto;
-/*  color: white;*/
   color: #440066;
   padding: 10px;
-/*  background: rgba(255, 255, 255, 0.699219); */
   background: transparent;
   
   word-wrap: break-word;  
@@ -66,7 +64,6 @@ a:hover { opacity: 0.8; }
 }
 
 input[type=submit] {
-/*  display: none; */
   border-style: solid;
   background-color: #EEE;
   padding: 5px 10px;
@@ -85,14 +82,45 @@ input[type=submit] {
   right: 130px;
 }
 .room form input[type=text]{
-  padding:5px 10px;
-  color:#666666;
-  background-color:#F7F7F7;
-  border-style: solid;
-  font-size: 20px;
-  line-height: 25px;
-  background: #fff;       
+  border:1px solid #D9D9D9;
+  color: #222;
+  cursor: auto;
+  display: inline-block;
+  font-family: arial, sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  height: 36px;
+  left: auto;
+  letter-spacing: normal;
+  line-height: normal;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+  outline-color: #222;
+  outline-style: none;
+  outline-width: 0px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0px;
+  padding-left: 3px;
+  padding-right: 0px;
+  padding-top: 2px;
+  position: relative;
+  resize: none;
+  text-align: -webkit-auto;
+  text-indent: 0px;
+  text-shadow: none;
+  text-transform: none;
+  top: auto;
+  visibility: visible;
+  white-space: pre-wrap;
   width: 100%;
+  word-spacing: 0px;
+  word-wrap: break-word;
+  z-index: auto;
 }
 
 .nicks {
