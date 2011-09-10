@@ -13,7 +13,7 @@ nick = user;
 
 var batches = {};
 
-if(room == "") room = "main" + '-' + domain.replace('.','_');
+if(room == "") room = "main";
 
 var socket = new io.Socket(null, {port: 81, rememberTransport: false});
 
@@ -23,8 +23,6 @@ socket.on('message', function(message){
   message = JSON.parse(message);
   var data = message.msg.split(" ");
 
-// console.log(data[0] + '-' + data[1] + '-' + data[2]);
-  
   var msg_room = "";
   if(message.room) msg_room = message.room;
   
@@ -435,6 +433,7 @@ function addUnread() {
   numUnread++;
   updateTitle("");
 }
+
 function updateTitle(leading) {
   var read = "";
   if (numUnread>0) {
@@ -442,26 +441,3 @@ function updateTitle(leading) {
   }
   document.title = leading + read + "CHATS.IO";
 }
-$(window).keydown(function(e) {
-    if (e.keyCode === 9) {
-        var $t = $('#t_main'),
-            nick = $('.nicks a').filter(function() {
-                return $(this).text().toLowerCase().indexOf($t.val().toLowerCase()) >= 0;
-            }).first().text();
-        if (!!nick) {
-            $t.val(nick + ': ');
-        }
-        return false;
-    }
-});
-
-// function play(sound, repeat){
-// 		var audio = new Audio("/audio/" + sound + ".mp3");
-//  
-// 		if(repeat){
-// 			audio.loop = true;
-// 		}
-// 		audio.play();
-//  
-// 		return audio;
-// 	}
