@@ -22,7 +22,7 @@ var archive = function(user, team,channel,message)
   {
     var db = mysql.createClient({
         user: 'root',
-        password: '???',
+        password: '??',
       });
     db.query('USE '+DATABASE);
     db.query( "insert into archive (user, team,channel,message) values(?, ?,?,?)", [nick, team,channel,message] );
@@ -60,7 +60,7 @@ function sendNicksList(client, room) {
 
 function broadCast(client, room, msg) {  
   var n = [];
-  console.log('Broadcasting');
+  console.log('[OUTGOING] ' + room + ' ' + msg);
   archive(nicks[client.sessionId],'interviewstreet',room,msg);
   for(key in nicks) {
     try {
@@ -166,7 +166,7 @@ socket.on("connection", function(client){
     // }
     if(allowed) {
       var msg = message.split(" ");
-	  console.log('msg:' + msg);
+      console.log('[INCOMING] ' + msg);
 
       switch (msg[0]) { 
         case "/whoami": 
