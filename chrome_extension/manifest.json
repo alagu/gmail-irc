@@ -1,7 +1,7 @@
 {
-  "name": "Chat",
+  "name": "IRC on GMail for Apps",
   "version": "0.0.1",
-  "description": "Chat",
+  "description": "Discussion in chat rooms for your own domain rather than person-to-person or group chats.",
   "content_scripts": [ {
      "exclude_globs": [  ],
      "include_globs": [ "https://mail.google.com/mail/*" ],
