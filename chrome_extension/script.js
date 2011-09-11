@@ -10,7 +10,7 @@ var CHAT  = {};
 
  CHAT.retryLoad = function()
  {
-    var inboxNode = $('.nH');
+    var inboxNode = document.title.search('@') != -1;
     if(inboxNode)
     {
       CHAT.buttonLoaded = true;
@@ -59,6 +59,9 @@ var CHAT  = {};
      var parser = new DOMParser();
      var xmlDocument = $(parser.parseFromString(data, "text/xml"));
      var fullCount = xmlDocument.find('fullcount').text();
+     
+     var matches = document.title.match(/([\S]+@[\S]+)/ig);
+     var titleEmail = matches[matches.length - 1];
 
      var mailTitle = $(xmlDocument.find('title')[0]).text().replace("Gmail - ", "");
      var mailAddress = mailTitle.match(/([\S]+@[\S]+)/ig)[0];
@@ -68,6 +71,14 @@ var CHAT  = {};
 
      if(CHAT.domain == 'gmail.com')
      {
+       CHAT.user = titleEmail.split('@')[0];
+       CHAT.domain = titleEmail.split('@')[1];
+       mailAddress = titleEmail;
+     }
+
+     if(CHAT.domain == 'gmail.com')
+     {
+       //If title is still gmail.com
        if(localStorage["gmailcom_info"] > 3) {
          $('#teamchat').remove();
        }
