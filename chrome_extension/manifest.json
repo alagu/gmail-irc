@@ -1,6 +1,6 @@
 {
   "name": "IRC for GMail Businesses",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Discussion in chat rooms for your own domain rather than person-to-person or group chats.",
    "icons": {
      "128": "icon.png"
