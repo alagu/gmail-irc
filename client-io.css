@@ -45,7 +45,7 @@ a:hover { opacity: 0.8; }
   top: 10px;
   right: 110px;
   overflow-y: auto;
-  color: #440066;
+  color: #222;
   padding: 10px;
   background: transparent;
   font-size:13px;
@@ -181,7 +181,6 @@ input[type=submit] {
   font-weight:bold;
 }
 .help {
-/*  background: #440066 url('/public/bubblepurpledark.png') repeat right top;*/
   background: #440066;
   padding: 15px;
   color:white;
