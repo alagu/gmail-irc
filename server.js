@@ -51,10 +51,11 @@ function HTMLEncode(wText){
 };
 
 function sendNicksList(client, room) {
+  var publisherDomain = nicks[client.sessionId]['domain'];
   var n = [];
   for(key in nicks) {
     try {
-      if(nicks[key] && nicks[key]["rooms"] && nicks[key]["rooms"].indexOf(room) >= 0) n.push(key + ":" + nicks[key]["nick"]);
+      if(nicks[key] && nicks[key]["rooms"] && nicks[key]["rooms"].indexOf(room) >= 0 && nicks[key]['domain'] == publisherDomain) n.push(key + ":" + nicks[key]["nick"]);
     } catch(e) { console.log(e); } 
   } 
   broadCast(client, room, "/list " + n.join(","));
